@@ -1,12 +1,15 @@
 # Anemometer Filter
 
-## Filter 
+## Filter
 
 The data is passed through an exponential filter then the median of recent points is taken. The filter can be adjusted by changing the values of **expWeightingFactor** and **medFactor**.
 
 ### Sample Filtered Data
 
 ![alt text](https://raw.githubusercontent.com/uwsailbot/anemometer_filter/master/Graphs/Median50_Exp07_%232.jpg "Graph of Filtered Data expWeightingFactor=0.07, medFactor=50")
+
+![alt text](https://raw.githubusercontent.com/uwsailbot/anemometer_filter/master/Graphs/Median50_Exp10.jpg "Graph of Filtered Data expWeightingFactor=0.1, medFactor=50")
+
 
 Graphs of the data using parameters can be found in the graphs folder.
 
@@ -17,7 +20,7 @@ The simulated data is comprised of the following three components. Each componen
 
 ### 1. Smooth Data
 
-The smooth data is intended to represent the true direction of the wind relative to the boat. It drifts slowly at a rate of up to **maxVel** with that rate changing by up to plus or minus **velChange** per tick. 
+The smooth data is intended to represent the true direction of the wind relative to the boat. It drifts slowly at a rate of up to **maxVel** with that rate changing by up to plus or minus **velChange** per tick.
 
 Every tick there is a one in **accelChance** of there being a large shift in the wind's direction. These shifts are intended to simulate a gust or change in the boat's heading. If that's the case the second derivative of the graph will increase to up to **accelRate**. The magnitude of this second derivative will decrease by up to **accelDecrease** every tick until it reaches zero. At this point the magnitude of the first derivative will decrease up to **velDecrease** every tick until it is within the normal range defined by **maxVel**.
 
@@ -29,7 +32,7 @@ The noise is meant to simulate vibrations in the anemometer or other small varia
 
 The data shown in the graph has been translated up by ten units. Normally the noise is centered around zero.
 
-![alt text](https://raw.githubusercontent.com/benajmin/anemometer-filters/master/Graphs/Noise.png "Graph of Noise") 
+![alt text](https://raw.githubusercontent.com/benajmin/anemometer-filters/master/Graphs/Noise.png "Graph of Noise")
 
 ### 3. Spikes
 
