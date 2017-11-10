@@ -15,6 +15,7 @@
 // Constants for anemometer filter
 const float expWeightingFactor = 0.07;
 const int medFactor = 50;
+const int timeInterval = 100;
 
 ros::NodeHandle  nh;
 std_msgs::Int32 winddir;
@@ -57,20 +58,25 @@ void setup(){
     pinMode(WindVanePin, INPUT);
 }
 
+unsigned long previousMillis = 0;
 void loop(){
+
+    if ((millis() - previousMillis) > timeInterval){
     VaneValue = analogRead(WindVanePin);
-    CalDirection = map(VaneValue, 0, 1023, 0, 360);
-    CalDirection = ((CalDirection % 360) + 360) % 360;
-
-    FilteredDirection = medianFilter(ExponentialFilter(CalDirection));
-
-      // Only update the display if change greater than 5 degrees. 
-    if(abs(FilteredDirection - LastValue) > 5)
-    { 
-         LastValue = FilteredDirection;
-         winddir.data = FilteredDirection;
-         anemometer.publish(&winddir);
-       
+        CalDirection = map(VaneValue, 0, 1023, 0, 360);
+        CalDirection = ((CalDirection % 360) + 360) % 360;
+    
+        FilteredDirection = medianFilter(ExponentialFilter(CalDirection));
+    
+          // Only update the display if change greater than 5 degrees. 
+        if(abs(FilteredDirection - LastValue) > 5)
+        { 
+             LastValue = FilteredDirection;
+             winddir.data = FilteredDirection;
+             anemometer.publish(&winddir);
+           
+        }
+        previousMillis = millis();
     }
   
     nh.spinOnce();
